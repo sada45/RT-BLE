@@ -20,7 +20,7 @@ sudo apt install gcc-arm-none-eabi
 make TARGET=nrf52840dk all -j16
 ```
 
-## The tests included
+## The included tests
 
 |Folder Name|Description|
 |-----------|-----------|
