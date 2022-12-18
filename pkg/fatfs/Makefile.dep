@@ -1,0 +1,11 @@
+USEMODULE += fatfs_diskio_mtd
+USEMODULE += mtd
+
+ifneq (,$(filter vfs_auto_format,$(USEMODULE)))
+  DEFAULT_MODULE += fatfs_vfs_format
+endif
+
+# Use RTC for timestamps if available
+ifeq (,$(filter rtt_rtc,$(USEMODULE)))
+  FEATURES_OPTIONAL += periph_rtc
+endif

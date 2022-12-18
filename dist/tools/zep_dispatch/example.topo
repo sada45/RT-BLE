@@ -1,0 +1,10 @@
+# uncomment to pin node A to a specific MAC address
+# A := BA:7C:18:E4:C0:45:65:AF
+
+# A and B are connected with an ideal link
+A	B
+# A and C are connected with a symmetric link with 10% packet loss
+A	C	0.9
+# B and C are on an asymmetric connection
+# The path B -> C has 60% packet loss while C -> B has 30% packet loss
+B	C	0.4	0.7

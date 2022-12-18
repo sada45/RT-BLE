@@ -1,0 +1,121 @@
+# additional modules dependencies
+
+include $(RIOTCPU)/esp_common/Makefile.dep
+
+USEPKG += esp32_sdk
+
+USEMODULE += esp_idf_common
+USEMODULE += esp_bootloader
+
+ifneq (,$(filter newlib,$(USEMODULE)))
+  DEFAULT_MODULE += newlib_nano
+endif
+
+ifneq (,$(filter cpp,$(USEMODULE)))
+  USEMODULE += pthread
+endif
+
+ifneq (,$(filter esp_eth,$(USEMODULE)))
+  USEMODULE += esp_idf_efuse
+  USEMODULE += esp_idf_eth
+  USEMODULE += esp_idf_event
+  USEMODULE += esp_idf_gpio
+  USEMODULE += esp_idf_spi_flash
+  USEMODULE += netdev_eth
+  USEMODULE += netopt
+  USEMODULE += ztimer_msec
+endif
+
+ifneq (,$(filter esp_wifi_any,$(USEMODULE)))
+  # add additional modules and packages used for any WiFi interface
+  USEPKG += esp32_sdk_lib_phy
+  USEPKG += esp32_sdk_lib_wifi
+  USEMODULE += esp_idf_efuse
+  USEMODULE += esp_idf_event
+  USEMODULE += esp_idf_heap
+  USEMODULE += esp_idf_nvs_flash
+  USEMODULE += esp_idf_spi_flash
+  USEMODULE += esp_idf_wifi
+  USEMODULE += esp_idf_wpa_supplicant
+  USEMODULE += pthread
+endif
+
+ifneq (,$(filter esp_idf_nvs_flash,$(USEMODULE)))
+  # add additional modules required by esp_idf_nvs_flash
+  USEMODULE += pthread
+  USEMODULE += mtd
+endif
+
+ifneq (,$(filter periph_rtc,$(USEMODULE)))
+    FEATURES_OPTIONAL += esp_rtc_timer_32k
+endif
+
+ifneq (,$(filter esp_rtc_timer_32k,$(FEATURES_USED)))
+    USEMODULE += esp_rtc_timer_32k
+endif
+
+ifneq (,$(filter periph_adc periph_dac,$(USEMODULE)))
+  FEATURES_REQUIRED += periph_adc_ctrl
+endif
+
+ifneq (,$(filter periph_i2c,$(USEMODULE)))
+  ifneq (,$(filter esp_i2c_hw,$(USEMODULE)))
+    USEMODULE += core_thread_flags
+    USEMODULE += ztimer_msec
+    USEMODULE += periph_i2c_hw
+  else
+    # PLEASE NOTE: because of the very poor and faulty hardware implementation
+    # we use software implementation by default for the moment (if module
+    # esp_i2c_hw is not explicitly used)
+    USEMODULE += esp_i2c_sw
+    USEMODULE += periph_i2c_sw
+  endif
+endif
+
+ifneq (,$(filter esp_spi_ram,$(USEMODULE)))
+  FEATURES_REQUIRED += esp_spi_ram
+  USEMODULE += esp_idf_efuse
+  USEMODULE += esp_idf_gpio
+  USEMODULE += esp_idf_heap
+  USEMODULE += esp_idf_spi_flash
+  USEMODULE += esp_idf_spi_ram
+endif
+
+ifneq (,$(filter esp_idf_heap,$(USEMODULE)))
+  # The ESP-IDF heap component uses the TLSF implementation that is part of
+  # the component. To avoid conflicts with modules and packages that use the
+  # RIOT package `tlsf`, this package is also used for the ESP-IDF heap instead
+  # of its own implementation. There does not seem to be any differences in
+  # the implementations of TLSF with the exception of heap poisoning, which
+  # is not configured.
+  USEPKG += tlsf
+else
+  USEMODULE += malloc_thread_safe
+endif
+
+ifneq (,$(filter mtd,$(USEMODULE)))
+  USEMODULE += esp_idf_spi_flash
+endif
+
+ifneq (,$(filter periph_rtc,$(USEMODULE)))
+  USEMODULE += rtt_rtc
+endif
+
+ifneq (,$(filter pm_layered,$(USEMODULE)))
+  USEMODULE += periph_rtt
+endif
+
+ifneq (,$(filter periph_rtt,$(USEMODULE)))
+  USEMODULE += periph_rtt_hw_sys
+  USEMODULE += periph_rtt_hw_rtc
+endif
+
+ifneq (,$(filter shell,$(USEMODULE)))
+  USEMODULE += ps
+endif
+
+ifneq (,$(filter esp_jtag,$(USEMODULE)))
+  FEATURES_REQUIRED += esp_jtag
+endif
+
+USEMODULE += libc_gettimeofday

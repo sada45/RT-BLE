@@ -1,0 +1,24 @@
+USEPKG += nanocbor
+
+USEMODULE += libcose_crypt
+
+USEMODULE += random
+
+ifneq (,$(filter libcose_crypt_hacl,$(USEMODULE)))
+  USEPKG += hacl
+endif
+ifneq (,$(filter libcose_crypt_c25519,$(USEMODULE)))
+  USEPKG += c25519
+endif
+ifneq (,$(filter libcose_crypt_tinycrypt,$(USEMODULE)))
+  USEPKG += tinycrypt
+endif
+ifneq (,$(filter libcose_crypt_monocypher,$(USEMODULE)))
+  USEPKG += monocypher
+endif
+ifneq (,$(filter libcose_crypt_riot,$(USEMODULE)))
+  USEMODULE += crypto
+endif
+
+DEFAULT_MODULE += libcose_crypt_init
+DEFAULT_MODULE += auto_init_libcose_crypt
