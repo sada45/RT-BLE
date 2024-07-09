@@ -250,9 +250,12 @@ int main(void)
         else if ((xtimer_now_usec() - last_app) < ri) {
             xtimer_usleep((last_app + ri) - xtimer_now_usec());
         }
-        else {
-            xtimer_msleep(rand() % 500);
-        }
+        /* In latency experiment, we should ensure the last packet is successfully transmitted,
+         * When the last packet is overtimed, the app start can start right after an CE, cause the rapid increase in the latency CDF
+         */
+        // else {
+        //     xtimer_msleep(rand() % 500);
+        // }
         
         last_app = xtimer_now_usec();
 		// rtt_printf("\n");
