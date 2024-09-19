@@ -254,22 +254,22 @@ int main(void)
         }
         cur_time = xtimer_now_usec();
         last_app = cur_time;
-		memset(_rxbuf, counter, 1024);
-        if (cur_time - last_switch_time >= 30000000) {
-            last_switch_time = cur_time;
-            if (is_critical) {
-                _rxbuf[0] = 0x56;
-                _rxbuf[1] = 0x78;
-                is_critical = 0;
-                transmit_len = 100;
-            }
-            else {
-                _rxbuf[0] = 0x12;
-                _rxbuf[1] = 0x34;
-                is_critical = 1;
-                transmit_len = 1024;
-            }
-        }
+		memset(_rxbuf, counter, transmit_len);
+        // if (cur_time - last_switch_time >= 30000000) {
+        //     last_switch_time = cur_time;
+        //     if (is_critical) {
+        //         _rxbuf[0] = 0x56;
+        //         _rxbuf[1] = 0x78;
+        //         is_critical = 0;
+        //         transmit_len = 100;
+        //     }
+        //     else {
+        //         _rxbuf[0] = 0x12;
+        //         _rxbuf[1] = 0x34;
+        //         is_critical = 1;
+        //         transmit_len = 1024;
+        //     }
+        // }
         printf("\n%d-app=%lu", counter, os_cputime_ticks_to_usecs(os_cputime_get32()));
         ble_phy_output_duty_cycle();
 		ble_send(_rxbuf, transmit_len);
