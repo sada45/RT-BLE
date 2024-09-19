@@ -4,7 +4,7 @@ PKG_NAME    = nimble
 #PKG_VERSION = 719bd3c435b728f07ce7aaffaf6cebbd9c659a46
 # For RT-BLE, we modified the NimBLE code, so it should be:
 PKG_URL		 = https://github.com/sada45/RT-BLE-NimBLE.git
-PKG_VERSION  = 5001217b29d476b1feb8e3464f13d4fc32b2c1fc
+PKG_VERSION  = 67ad5745c16e01732e31638fa9bd6289a0c8617b
 PKG_LICENSE = Apache-2.0
 
 include $(RIOTBASE)/pkg/pkg.mk
